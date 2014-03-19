@@ -5,7 +5,7 @@
     Plugin URI: https://tadpole.cc
     Description: Plugin to syncronize members in CiviCRM with WordPress
     Author: Jag Kandasamy and Tadpole Collective
-    Version: 0.1
+    Version: 1.0
     Author URI: https://tadpole.cc
 
     Based on CiviMember Role Synchronize by Jag Kandasamy of http://www.orangecreative.net.  This has been
@@ -35,7 +35,7 @@ function tadms_install() {
 
    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
    dbDelta($sql);    
-   add_option("jal_db_version", $jal_db_version);    
+   add_option("tadms_db_version", $tadms_db_version);    
 }    
     
 register_activation_hook(__FILE__,'tadms_install');    
