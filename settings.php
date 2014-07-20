@@ -2,8 +2,9 @@
  require_once('civi.php'); 
  if(isset($_GET['q']) && $_GET['q'] == "edit" ){
     if(!empty($_GET['id'])) {
-        $table_name = $wpdb->prefix . "civi_member_sync";
-        $select = $wpdb->get_results( "SELECT * FROM $table_name WHERE `id` =".$_GET['id']);
+        $rid = $_GET['id'];
+        $wpdb->civi_member_sync = $wpdb->prefix . 'civi_member_sync';
+        $select = $wpdb->get_results($wpdb->prepare( "SELECT * FROM $wpdb->civi_member_sync  WHERE `id` = %d"), $rid);
         $wp_role = $select[0]->wp_role; 
         $expired_wp_role = $select[0]->expire_wp_role; 
         $civi_member_type  = $select[0]->civi_mem_type;  
@@ -157,8 +158,8 @@ if ($_POST) {
     }
     
     if(empty($sameType) && empty($errors)) {
-        $table_name = $wpdb->prefix . "civi_member_sync";    
-        $insert = $wpdb->get_results( "REPLACE INTO  $table_name SET `wp_role`='$wp_role', `civi_mem_type`=$civi_member_type, `current_rule`='$current_rule',`expiry_rule`='$expiry_rule', `expire_wp_role`='$expired_wp_role'" );  
+        $wpdb->civi_member_sync = $wpdb->prefix . 'civi_member_sync';
+        $insert = $wpdb->get_results($wpdb->prepare("REPLACE INTO  $wpdb->civi_member_sync SET `wp_role`= %s, `civi_mem_type`= %d, `current_rule`= %s,`expiry_rule`= %s, `expire_wp_role`= %s", array($wp_role, $civi_member_type, $current_rule, $expiry_rule, $expired_wp_role) ) ) ;  
         
        $location = get_bloginfo('url')."/wp-admin/options-general.php?page=civi_member_sync/list.php";
         echo "<meta http-equiv='refresh' content='0;url=$location' />";exit;

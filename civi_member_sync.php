@@ -5,7 +5,7 @@
     Plugin URI: https://tadpole.cc
     Description: Plugin to syncronize members in CiviCRM with WordPress
     Author: Jag Kandasamy and Tadpole Collective
-    Version: 1.0
+    Version: 1.1
     Author URI: https://tadpole.cc
 
     Based on CiviMember Role Synchronize by Jag Kandasamy of http://www.orangecreative.net.  This has been
@@ -14,7 +14,7 @@
     */  
     
 global $tadms_db_version;
-$tadms_db_version = "1.0";
+$tadms_db_version = "1.1";
 
 function tadms_install() {
    global $wpdb;
@@ -92,7 +92,7 @@ function civi_member_sync_check() {
     //get username in post while login  
     if (!empty($_POST['log'])) {        
       $username = $_POST['log']; 
-      $userDetails = $wpdb->get_results("SELECT * FROM $wpdb->users WHERE user_login ='$username'");
+      $userDetails = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->users WHERE user_login =%s",$username));
       $currentUserID = $userDetails[0]->ID;             
     } else {
       $currentUserID = $current_user->ID;          
@@ -100,8 +100,7 @@ function civi_member_sync_check() {
     //getting current logged in user's role    
     $current_user_role = new WP_User( $currentUserID );
     $current_user_role =  $current_user_role->roles[0];
-    //echo $current_user_role . "\n";
-       
+    
     civicrm_wp_initialize( ); 
     //getting user's civi contact id and checkmembership details     
     if($current_user_role !='administrator') {       
@@ -124,7 +123,6 @@ function civi_member_sync_check() {
     
 add_action('wp_login', 'civi_member_sync_check');
 add_action('wp_logout', 'civi_member_sync_check');
-//add_action('profile_update', 'civi_member_sync_check');
   
 /** function to check membership record and assign wordpress role based on themembership status
 input params
@@ -139,7 +137,6 @@ function member_check($contactID,$currentUserID, $current_user_role) {
   if($current_user_role !='administrator') {
     //fetching membership details
 	  $memDetails=civicrm_api("Membership","get", array ('version' => '3','page' =>'CiviCRM', 'q' =>'civicrm/ajax/rest', 'sequential' =>'1','contact_id' =>$contactID));
-    //print_r($memDetails); echo "\n";
     if (!empty($memDetails['values'])) {
 		  foreach($memDetails['values'] as $key => $value){
 		      $memStatusID = $value['status_id']; 
@@ -148,35 +145,26 @@ function member_check($contactID,$currentUserID, $current_user_role) {
 	  }
       
     //fetching member sync association rule to the corsponding membership type 
-    $table_name = $wpdb->prefix . "civi_member_sync";
-	  $memSyncRulesDetails = $wpdb->get_results("SELECT * FROM $table_name WHERE `civi_mem_type`='$membershipTypeID'"); 
-    //print_r($memSyncRulesDetails);
+    $wpdb->civi_member_sync = $wpdb->prefix . 'civi_member_sync';
+	  $memSyncRulesDetails = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->civi_member_sync WHERE `civi_mem_type`=%d",$membershipTypeID)); 
 	  if(!empty($memSyncRulesDetails)) {
 	    $current_rule =  unserialize($memSyncRulesDetails[0]->current_rule);
-      //print_r($current_rule); echo "\n";
 	    $expiry_rule =  unserialize($memSyncRulesDetails[0]->expiry_rule );
-      //print_r($expiry_rule); echo "\n";
 	    //checking membership status
 	    if (isset($memStatusID) && array_search($memStatusID,$current_rule)) {       
 		    $wp_role =  strtolower($memSyncRulesDetails[0]->wp_role);
-        //print $wp_role; 
 		    if($wp_role == $current_user_role){
-         //print 'current member, up to date';      
 		      return;
 		    } else {
-          //print 'current member, update';
 		      $wp_user_object = new WP_User($currentUserID);
 		      $wp_user_object->set_role("$wp_role"); 
 		    }
 	    } else {
 		    $wp_user_object = new WP_User($currentUserID);
 		    $expired_wp_role = strtolower($memSyncRulesDetails[0]->expire_wp_role);
-        //print $expired_wp_role;
 		    if (!empty($expired_wp_role)) {            
-          //print 'expired member, update';
 		   	  $wp_user_object->set_role("$expired_wp_role"); 
 		    } else {
-          //print 'expired member, up to date';
 		   	  $wp_user_object->set_role("");           
 		    }
 	    }

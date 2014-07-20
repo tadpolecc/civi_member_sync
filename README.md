@@ -35,5 +35,5 @@ Note: Only one membership type can synchronize with one WordPress role since a W
 Be sure to test this Plugin before using it in Production Environment. Log in as that user to ensure you have been granted the appropriate role. Then take away the membership for this user in their CiviCRM record, log back in as the test user, and make sure you no longer have that role.
 This Plugin is Dependant only on CiviCRM.
 
-Note: This plugin will sync membership roles on user login and on a daily basis
+Note: This plugin will sync membership roles on user login and on a daily basis.
   
