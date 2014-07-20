@@ -2,8 +2,9 @@
 require_once('civi.php');
  if(isset($_GET['q']) && $_GET['q'] == "delete" ){
     if(!empty($_GET['id'])) {
-        $table_name = $wpdb->prefix . "civi_member_sync";
-        $delete = $wpdb->get_results( "DELETE FROM $table_name WHERE `id`=".$_GET['id']);        
+        $wpdb->civi_member_sync = $wpdb->prefix . 'civi_member_sync';
+        $rid = $_GET['id'];
+        $delete = $wpdb->get_results($wpdb->prepare( "DELETE FROM $wpdb->civi_member_sync WHERE `id`= %d", $rid)) ;     
     }
  }
 $addNew_url = get_bloginfo('url')."/wp-admin/admin.php?&page=civi_member_sync/settings.php"; 
@@ -15,8 +16,8 @@ $manual_sync_url = get_bloginfo('url')."/wp-admin/admin.php?&page=civi_member_sy
 </div>
 
 <?php
-$table_name = $wpdb->prefix . "civi_member_sync";
-$select = $wpdb->get_results( " SELECT * FROM $table_name "); ?>
+$wpdb->civi_member_sync = $wpdb->prefix . 'civi_member_sync';
+$select = $wpdb->get_results($wpdb->prepare( " SELECT * FROM $wpdb->civi_member_sync " )); ?>
 <table cellspacing="0" class="wp-list-table widefat fixed users">
  <thead>
     <tr>
