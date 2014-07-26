@@ -16,8 +16,9 @@ $manual_sync_url = get_bloginfo('url')."/wp-admin/admin.php?&page=civi_member_sy
 </div>
 
 <?php
-$wpdb->civi_member_sync = $wpdb->prefix . 'civi_member_sync';
-$select = $wpdb->get_results($wpdb->prepare( " SELECT * FROM $wpdb->civi_member_sync " )); ?>
+$tablename = $wpdb->prefix . 'civi_member_sync';
+$select =$wpdb->get_results($wpdb->prepare( " SELECT * FROM $tablename ", $tablename ));
+?>
 <table cellspacing="0" class="wp-list-table widefat fixed users">
  <thead>
     <tr>
