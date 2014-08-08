@@ -38,4 +38,3 @@ Be sure to test this Plugin before using it in Production Environment. Log in as
 This Plugin is Dependant only on CiviCRM.
 
 Note: This plugin will sync membership roles on user login and on a daily basis.
-  

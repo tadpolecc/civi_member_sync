@@ -2,8 +2,8 @@
  require_once('civi.php'); 
  if(isset($_GET['q']) && $_GET['q'] == "edit" ){
     if(!empty($_GET['id'])) {
-        $rid = $_GET['id'];
-        $wpdb->civi_member_sync = $wpdb->prefix . 'civi_member_sync';
+	$rid = $_GET['id'];
+    $wpdb->civi_member_sync = 'mtl_civi_member_sync';
         $select = $wpdb->get_results($wpdb->prepare( "SELECT * FROM $wpdb->civi_member_sync  WHERE `id` = %d"), $rid);
         $wp_role = $select[0]->wp_role; 
         $expired_wp_role = $select[0]->expire_wp_role; 
@@ -157,8 +157,8 @@ if ($_POST) {
         $errors[] = "Expiry Status field is required.";
     }
     
-    if(empty($sameType) && empty($errors)) {
-        $wpdb->civi_member_sync = $wpdb->prefix . 'civi_member_sync';
+    if(empty($sameType) && empty($errors)) {    
+		$wpdb->civi_member_sync = 'mtl_civi_member_sync';
         $insert = $wpdb->get_results($wpdb->prepare("REPLACE INTO  $wpdb->civi_member_sync SET `wp_role`= %s, `civi_mem_type`= %d, `current_rule`= %s,`expiry_rule`= %s, `expire_wp_role`= %s", array($wp_role, $civi_member_type, $current_rule, $expiry_rule, $expired_wp_role) ) ) ;  
         
        $location = get_bloginfo('url')."/wp-admin/options-general.php?page=civi_member_sync/list.php";
