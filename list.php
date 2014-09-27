@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once('civi.php');
  if(isset($_GET['q']) && $_GET['q'] == "delete" ){
     if(!empty($_GET['id'])) {

@@ -3,15 +3,30 @@
  if(isset($_GET['q']) && $_GET['q'] == "edit" ){
     if(!empty($_GET['id'])) {
         $rid = $_GET['id'];
+        $cmsid= absint($rid);
+        $int_id = absint( $_GET['id']);
+        //var_dump($int_id);
+        //var_dump($cmsid);
         $wpdb->civi_member_sync = $wpdb->prefix . 'civi_member_sync';
-        $select = $wpdb->get_results($wpdb->prepare( "SELECT * FROM $wpdb->civi_member_sync  WHERE `id` = %d"), $rid);
+        $select = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->civi_member_sync  WHERE id = %d", $cmsid));
+        //var_dump($select);
         $wp_role = $select[0]->wp_role; 
+        //$wp_role = $wpdb->get_results( "SELECT wp_role FROM $wpdb->civi_member_sync  WHERE id = $cmsid");
+        //var_dump($wp_role);
         $expired_wp_role = $select[0]->expire_wp_role; 
+        //$expired_wp_role = $wpdb->get_results( "SELECT expire_wp_role FROM $wpdb->civi_member_sync  WHERE id = $cmsid");
+        //var_dump($expired_wp_role);
         $civi_member_type  = $select[0]->civi_mem_type;  
-        $current_rule =  unserialize($select[0]->current_rule);
-        $expiry_rule =  unserialize($select[0]->expiry_rule );
-    }      
+        //$civi_member_type = $wpdb->get_results( "SELECT civi_mem_type FROM $wpdb->civi_member_sync  WHERE id = $cmsid");
+        //var_dump($civi_member_type);
+        $current_rule =  maybe_unserialize($select[0]->current_rule);
+        //$current_rule = maybe_unserialize( $wpdb->get_results("SELECT current_rule FROM $wpdb->civi_member_sync  WHERE id = $cmsid"));
+        //var_dump($current_rule);
+        $expiry_rule =  maybe_unserialize($select[0]->expiry_rule );
+        //$expiry_rule = maybe_unserialize( $wpdb->get_results("SELECT expiry_rule FROM $wpdb->civi_member_sync  WHERE id = $cmsid"));
+        //var_dump($expiry_rule);   
  }  
+ }
 ?>
 <div id="icon-options-general" class="icon32"></div> 
 <script type="text/javascript">
@@ -36,8 +51,7 @@ jQuery(function() {
         <?php  if(isset($_GET['q'])) $title = "EDIT ASSOCIATION RULE"; else  $title = "ADD ASSOCIATION RULE";   ?>  
         <h2 id="add-new-user"><?php echo $title;?></h2>
         <p>Choose a CiviMember Membership Type and a Wordpress Role below. This will associate that Membership with the Role. If you would like the have the same Membership be associated with more than one role, you will need to add a second association rule after you have completed this one.</p>
-        <form method="POST" id="theform" > 
-           <span class="error"><?php echo $nameErr;?></span>
+        <form method="POST" id="theform" >
             <table class="form-table">  
                <tr class="form-field form-required">  
                     <th scope="row">  
@@ -48,10 +62,15 @@ jQuery(function() {
                     <td>  
                          <select name="civi_member_type" id= "civi_member_type" class ="required"> 
                          <option value=""></option>                                               
-                         <?php                        
-                         foreach( $MembershipType as $key => $value) { ?>                                                    
-                         <option value=<?php echo $key; if( $key == $civi_member_type) { ?> selected="selected" <?php } ?>> <?php echo $value; ?></option>                 <?php } ?>
+                         <?php foreach( $MembershipType as $key => $value) {
+                         $output_temp = "<option value=" . $key;
+                         if( $key == $civi_member_type) 
+                         { $output_temp .= ' selected="selected"'; }                                          
+                         $output_temp .= '>' . esc_attr($value) . '</option>';
+                         echo $output_temp; }
+                         ?>
                          </select>
+                          
                     </td>  
                 </tr>
                 <tr class="form-field form-required">  
@@ -65,9 +84,13 @@ jQuery(function() {
                          <option value=""> </option>
                         <?php global $wp_roles;
                               $roles = $wp_roles->get_names();                       
-                         foreach( $roles as $key => $value) { ?>                                                    
-                         <option value=<?php echo $value; if( $value == $wp_role) { ?> selected="selected" <?php } ?>> <?php echo $value; ?></option>
-                         <?php } ?>
+                         foreach( $roles as $key => $value) {
+                         $output_temp = "<option value=" . $value;  
+                         if( $value == $wp_role) 
+                          { $output_temp .= ' selected="selected"' ; }
+                         $output_temp .= '>' . esc_attr($value) . '</option>';
+                         echo $output_temp; }
+                         ?>
                          </select>
                     </td>  
                 </tr>                
@@ -109,10 +132,14 @@ jQuery(function() {
                         <select name="expire_assign_wp_role" id ="expire_assign_wp_role" class ="required"> 
                          <option value=""> </option>
                         <?php global $wp_roles;
-                              $roles = $wp_roles->get_names();                       
-                         foreach( $roles as $key => $value) { ?>                                                    
-                         <option value=<?php echo $value; if( $value ==  $expired_wp_role) { ?> selected="selected" <?php } ?>> <?php echo $value; ?></option>
-                         <?php } ?>
+                              $roles = $wp_roles->get_names();                            
+                         foreach( $roles as $key => $value) {
+                         $output_temp = "<option value=" . $value;  
+                         if( $value == $expired_wp_role) 
+                          { $output_temp .= ' selected="selected"' ; }
+                         $output_temp .= '>' . esc_attr($value) . '</option>';
+                         echo $output_temp; }
+                         ?>
                          </select>
                     </td>  
                 </tr>
@@ -170,4 +197,3 @@ if ($_POST) {
         ?> <span class="error"  style="color: #FF0000;"><?php foreach ($errors as $key => $values){ echo $values."<br>"; } ?> </span>  <?php
    }
 }
-?>
