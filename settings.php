@@ -161,7 +161,7 @@ if ($_POST) {
         $wpdb->civi_member_sync = $wpdb->prefix . 'civi_member_sync';
         $insert = $wpdb->get_results($wpdb->prepare("REPLACE INTO  $wpdb->civi_member_sync SET `wp_role`= %s, `civi_mem_type`= %d, `current_rule`= %s,`expiry_rule`= %s, `expire_wp_role`= %s", array($wp_role, $civi_member_type, $current_rule, $expiry_rule, $expired_wp_role) ) ) ;  
         
-       $location = get_bloginfo('url')."/wp-admin/options-general.php?page=civi_member_sync/list.php";
+       $location = get_bloginfo('url')."/wp-admin/options-general.php?page=" . CIV_MEMB_SYNC_BASE . "list.php";
         echo "<meta http-equiv='refresh' content='0;url=$location' />";exit;
     }else{
         if(!empty($sameType)){  
