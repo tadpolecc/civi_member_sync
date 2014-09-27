@@ -5,7 +5,7 @@
   <table class="form-table">      
       <td>
       <span>Manual Synchronization:</span> <br /> 
-      <?php $sync_confirm_url = get_bloginfo('url')."/wp-admin/admin.php?&action=confirm&page=civi_member_sync/manual_sync.php"; ?>                          
+      <?php $sync_confirm_url = get_bloginfo('url')."/wp-admin/admin.php?&action=confirm&page=" . CIV_MEMB_SYNC_BASE . "manual_sync.php"; ?>                          
        <input class="button-primary" type="submit" value="Synchronize CiviMember Membership Types to WordPress Roles now" onclick="window.location.href='<?php echo $sync_confirm_url; ?>'" />
       </td> 
    </tr> 
