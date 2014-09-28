@@ -23,7 +23,7 @@ define( 'CIV_MEMB_SYNC_BASE', str_replace(basename( __FILE__),"",plugin_basename
 function tadms_install() {
    global $wpdb;
    global $tadms_db_version;
-   $tadms_db_version = "1.1";
+   $tadms_db_version = "1.2";
 
    $table_name = $wpdb->prefix . "civi_member_sync";
       
@@ -132,7 +132,7 @@ add_action('wp_logout', 'civi_member_sync_check');
 /** function to check membership record and assign wordpress role based on themembership status
 input params
 #CiviCRM contactID 
-#ordpress UserID and 
+#Wordpress UserID and 
 #User Role **/
 function member_check($contactID,$currentUserID, $current_user_role) {
 
@@ -196,7 +196,6 @@ function my_plugin_admin_init() {
 
 function plugin_add_settings_link($links) {
 	$settings_link = '<a href="admin.php?page=' . CIV_MEMB_SYNC_BASE . 'list.php">Settings</a>';
-	//$settings_link = '<a href="admin.php?page=memb-sync/list.php">Settings</a>';
   	array_push( $links, $settings_link );
   	return $links;
 }

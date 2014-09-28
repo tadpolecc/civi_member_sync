@@ -57,7 +57,6 @@ jQuery(function() {
                          echo $output_temp; }
                          ?>
                          </select>
-
                     </td>
                 </tr>
                 <tr class="form-field form-required">
