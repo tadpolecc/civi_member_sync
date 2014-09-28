@@ -7,8 +7,8 @@ require_once('civi.php');
         $delete = $wpdb->get_results($wpdb->prepare( "DELETE FROM $wpdb->civi_member_sync WHERE `id`= %d", $rid)) ;     
     }
  }
-$addNew_url = get_bloginfo('url')."/wp-admin/admin.php?&page=civi_member_sync/settings.php"; 
-$manual_sync_url = get_bloginfo('url')."/wp-admin/admin.php?&page=civi_member_sync/manual_sync.php";  
+$addNew_url = get_bloginfo('url')."/wp-admin/admin.php?&page=" . CIV_MEMB_SYNC_BASE . "settings.php"; 
+$manual_sync_url = get_bloginfo('url')."/wp-admin/admin.php?&page=" . CIV_MEMB_SYNC_BASE . "manual_sync.php";  
 ?>
 <div id="icon-edit-pages" class="icon32"></div>
 <div class="wrap">     
@@ -34,8 +34,8 @@ $select =$wpdb->get_results($wpdb->prepare( " SELECT * FROM $tablename ", $table
  <tr>   
   <td><?php  echo get_names($value->civi_mem_type, $MembershipType);  ?>
   <br />
-  <?php $edit_url = get_bloginfo('url')."/wp-admin/admin.php?&q=edit&id=".$value->id."&page=civi_member_sync/settings.php";  ?>
-  <?php $delete_url = get_bloginfo('url')."/wp-admin/admin.php?&q=delete&id=".$value->id."&page=civi_member_sync/list.php";  ?>
+  <?php $edit_url = get_bloginfo('url')."/wp-admin/admin.php?&q=edit&id=".$value->id."&page=" . CIV_MEMB_SYNC_BASE . "settings.php";  ?>
+  <?php $delete_url = get_bloginfo('url')."/wp-admin/admin.php?&q=delete&id=".$value->id."&page=" . CIV_MEMB_SYNC_BASE . "list.php";  ?>
   <div class="row-actions">
       <span class="edit">
       <a href="<?php echo $edit_url ?>">Edit</a> | </span>

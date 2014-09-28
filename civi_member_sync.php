@@ -1,11 +1,11 @@
 <?php
  /* 
-    Plugin Name: CiviMember Role Synchronize 
+    Plugin Name: CiviMember Role Synchronize -ArtsW Fork
     Depends: CiviCRM
    Plugin URI: https://tadpole.cc
     Description: Plugin to syncronize members in CiviCRM with WordPress
     Author: Jag Kandasamy and Tadpole Collective
-    Version: 1.1
+    Version: 1.2
     Author URI: https://tadpole.cc
 
     Based on CiviMember Role Synchronize by Jag Kandasamy of http://www.orangecreative.net.  This has been
@@ -14,7 +14,11 @@
     */  
     
 global $jal_db_version;
-$jal_db_version = "1.1";
+$jal_db_version = "1.2";
+define( 'CIV_MEMB_SYNC_DIR', dirname( __FILE__ ) );
+define( 'CIV_MEMB_SYNC_URL', plugin_dir_url( __FILE__ ) );
+define( 'CIV_MEMB_SYNC_PBASE', plugin_basename( __FILE__ ) );
+define( 'CIV_MEMB_SYNC_BASE', str_replace(basename( __FILE__),"",plugin_basename(__FILE__)));
 
 function jal_install() {
    global $wpdb;
@@ -178,9 +182,9 @@ function member_check($contactID,$currentUserID, $current_user_role) {
 /** function to set setings page for the plugin in menu **/
 function setup_civi_member_sync_check_menu() {  
     
-    add_submenu_page('CiviMember Role Sync', 'CiviMember Role Sync', 'List of Rules', 'add_users', 'civi_member_sync/settings.php');  
-    add_submenu_page('CiviMember Role Manual Sync', 'CiviMember Role Manual Sync', 'List of Rules', 'add_users', 'civi_member_sync/manual_sync.php'); 
-    add_options_page( 'CiviMember Role Sync', 'CiviMember Role Sync', 'manage_options', 'civi_member_sync/list.php');        
+    add_submenu_page('CiviMember Role Sync', 'CiviMember Role Sync', 'List of Rules', 'add_users', CIV_MEMB_SYNC_BASE .'settings.php');  
+    add_submenu_page('CiviMember Role Manual Sync', 'CiviMember Role Manual Sync', 'List of Rules', 'add_users', CIV_MEMB_SYNC_BASE .'manual_sync.php'); 
+    add_options_page( 'CiviMember Role Sync', 'CiviMember Role Sync', 'manage_options', CIV_MEMB_SYNC_BASE .'list.php');        
 }  
 
 add_action("admin_menu", "setup_civi_member_sync_check_menu"); 
@@ -193,7 +197,7 @@ function my_plugin_admin_init() {
 }
 
 function plugin_add_settings_link($links) {
-	$settings_link = '<a href="admin.php?page=civi_member_sync/list.php">Settings</a>';
+	$settings_link = '<a href="admin.php?page=' . CIV_MEMB_SYNC_BASE . 'list.php">Settings</a>';
   	array_push( $links, $settings_link );
   	return $links;
 }
