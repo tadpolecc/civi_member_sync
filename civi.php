@@ -14,7 +14,7 @@ $MembershipStatusDetials=civicrm_api("MembershipStatus","get", array (version =>
 
 function get_names($values,$memArray){   
     $memArray = array_flip($memArray); 
-    $current_rule =  unserialize($values); 
+    $current_rule =  maybe_unserialize($values); 
     if(empty($current_rule)) {
       $current_rule = $values; 
     }    
