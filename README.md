@@ -7,6 +7,11 @@ This is a one way sync -- It syncs from CiviCRM to WordPress.  Users are not syn
 
 This plugin has been modified by Tadpole Collective, based on the work done by Jag Kandasamy http://www.orangecreative.net
 
+
+Compatibility
+--------------
+This has been tested with CiviCRM 4.4.7 and 4.5.0
+
 Configuring CiviMember Roles Sync Plugin:
 ------------------------------------------
 
