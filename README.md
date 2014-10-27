@@ -18,7 +18,7 @@ Configuring CiviMember Roles Sync Plugin:
 Before you get started, be sure to have created all of your membership types and membership status rules for CiviMember as well as the WordPress role(s) you would like to synchronize them with.
 Note: Only one membership type can synchronize with one WordPress role since a WordPress  user can have atmost only one role in WordPress).
 
-1. The first step is to Download the Plugin and put it under your sites wp-content\plugins\ directory  and rename the folder as "civi_member_sync". 
+1. The first step is to Download the Plugin and put it under your sites wp-content\plugins\ directory.
    Then Activate the plugin by going to your WordPress site's Plugin page at http://example.com/wp-admin/plugins.php
    It will be CiviMember Role Synchronize.
    
