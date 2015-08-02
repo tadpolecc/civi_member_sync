@@ -231,7 +231,7 @@ function plugin_add_settings_link( $links ) {
 $plugin = plugin_basename( __FILE__ );
 add_filter( "plugin_action_links_$plugin", 'plugin_add_settings_link' );
 
-function tc_add_cust_caps() {
+function tccms_add_cust_caps() {
     $role = get_role( 'administrator' );
 
     $role->add_cap ('block_civi_member_sync');
@@ -242,5 +242,5 @@ function tc_add_cust_caps() {
 
 }
 
-register_activation_hook( __FILE__, 'tc_add_cust_caps');
+register_activation_hook( __FILE__, 'tccms_add_cust_caps');
 ?>
