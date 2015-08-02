@@ -120,10 +120,11 @@ function civi_member_sync_check() {
 	//getting current logged in user's role
 	$current_user_role = new WP_User( $currentUserID );
 	$current_user_role = $current_user_role->roles[0];
-
+	
 	civicrm_wp_initialize();
 	//getting user's civi contact id and checkmembership details
-	if ( $current_user_role != 'administrator' ) {
+	// exclude admins
+	if ( is_super_admin( $user->ID ) OR $user->has_cap( 'block_civi_member_sync' ) ) return;
 		require_once 'CRM/Core/Config.php';
 		$config = CRM_Core_Config::singleton();
 		require_once 'api/api.php';
@@ -139,7 +140,7 @@ function civi_member_sync_check() {
 		if ( ! empty( $contactID ) ) {
 			$member = member_check( $contactID, $currentUserID, $current_user_role );
 		}
-	}
+	//}
 
 	return TRUE;
 }
@@ -157,7 +158,9 @@ function member_check( $contactID, $currentUserID, $current_user_role ) {
 	global $wpdb;
 	global $user;
 	global $current_user;
-	if ( $current_user_role != 'administrator' ) {
+
+	if ( is_super_admin( $user->ID ) OR $user->has_cap( 'block_civi_member_sync' ) ) return;
+	
 		//fetching membership details
 		$memDetails = civicrm_api( "Membership", "get", array(
 			'version'    => '3',
@@ -198,7 +201,7 @@ function member_check( $contactID, $currentUserID, $current_user_role ) {
 				}
 			}
 		}
-	}
+	//}
 
 	return TRUE;
 }
@@ -228,4 +231,17 @@ function plugin_add_settings_link( $links ) {
 
 $plugin = plugin_basename( __FILE__ );
 add_filter( "plugin_action_links_$plugin", 'plugin_add_settings_link' );
+
+function tc_add_cust_caps() {
+    $role = get_role( 'administrator' );
+
+    $role->add_cap ('block_civi_member_sync');
+    
+    $role_sub = get_role( 'subscriber' );
+    $role_sub->add_cap ('allow_civi_member_sync');
+    
+
+}
+
+register_activation_hook( __FILE__, 'tc_add_cust_caps');
 ?>

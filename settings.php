@@ -84,12 +84,13 @@ if ( isset( $_GET['q'] ) && $_GET['q'] == "edit" ) {
 							<option value=""></option>
 							<?php global $wp_roles;
 							$roles = $wp_roles->get_names();
-							foreach ( $roles as $key => $value ) {
-								$output_temp = "<option value=" . $value;
-								if ( $value == $wp_role ) {
+							foreach (get_editable_roles() as $role_name => $role_info){
+							//foreach ( $roles as $key => $value ) {
+								$output_temp = "<option value=" . $role_name;
+								if ( $role_name == $wp_role ) {
 									$output_temp .= ' selected="selected"';
 								}
-								$output_temp .= '>' . esc_attr( $value ) . '</option>';
+								$output_temp .= '>' . esc_attr( $role_name ) . '</option>';
 								echo $output_temp;
 							}
 							?>
@@ -149,12 +150,13 @@ if ( isset( $_GET['q'] ) && $_GET['q'] == "edit" ) {
 							<option value=""></option>
 							<?php global $wp_roles;
 							$roles = $wp_roles->get_names();
-							foreach ( $roles as $key => $value ) {
-								$output_temp = "<option value=" . $value;
-								if ( $value == $expired_wp_role ) {
+							//foreach ( $roles as $key => $value ) {
+							foreach (get_editable_roles() as $role_name => $role_info){
+								$output_temp = "<option value=" . $role_name;
+								if ( $role_name == $expired_wp_role ) {
 									$output_temp .= ' selected="selected"';
 								}
-								$output_temp .= '>' . esc_attr( $value ) . '</option>';
+								$output_temp .= '>' . esc_attr( $role_name ) . '</option>';
 								echo $output_temp;
 							}
 							?>
