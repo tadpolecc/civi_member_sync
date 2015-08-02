@@ -3,14 +3,13 @@
 	Plugin Name: Tadpole CiviMember Role Synchronize
 	Depends: CiviCRM
 	Plugin URI: https://tadpole.cc
-	Description: Plugin to syncronize members in CiviCRM with WordPress
-	Author: Jag Kandasamy and Tadpole Collective
-	Version: 4.5
+	Description: Plugin to Update WP roles based on membership data in CiviCRM
+	Author: Tadpole Collective
+	Version: 4.6
 	Author URI: https://tadpole.cc
 
 	Based on CiviMember Role Synchronize by Jag Kandasamy of http://www.orangecreative.net.  This has been
-	altered to use WP $wpdb class.
-
+	altered extensively.
 	*/
 
 global $tadms_db_version;
