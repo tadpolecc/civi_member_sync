@@ -1,6 +1,8 @@
 Wordpress CiviMember Role Sync Plugin: 
 ----------------------------------------
 
+## The best bits of this made it in to @christianwach's new plugin - https://github.com/christianwach/civicrm-wp-member-sync  alos available here:  https://wordpress.org/plugins/civicrm-wp-member-sync/  We recommend to use that plugin for CiviCRM 4.6 or greater
+
 A common need is to synchronize your CiviCRM members to your WordPress roles to allow you to have, among other things, members' only content on your website that is only accessible to current members defined by the rules and types you have set up in CiviCRM. 
 
 This is a one way sync -- It syncs from CiviCRM to WordPress.  Users are not sync'd only roles.  WordPress roles will get updated based on CiviCRM memberships.
